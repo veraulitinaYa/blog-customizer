@@ -12,6 +12,8 @@ import {
 	defaultArticleState,
 } from 'src/constants/articleProps';
 import { Separator } from 'src/ui/separator';
+import { Spacer } from 'src/ui/spacer/spacer';
+import { Text } from 'src/ui/text';
 
 import styles from './ArticleParamsForm.module.scss';
 
@@ -73,7 +75,11 @@ export const ArticleParamsForm = () => {
 					isOpen ? styles.container_open : ''
 				}`}>
 				<form className={styles.form}>
+					<Text as='h2' size={31} weight={800} uppercase dynamicLite>
+						Задайте параметры
+					</Text>
 					{/* 1. Select */}
+					<Spacer />
 					<Select
 						title='Шрифт'
 						options={fontFamilyOptions}
@@ -81,16 +87,16 @@ export const ArticleParamsForm = () => {
 						onChange={setSelectedFontFamilyOption}
 						placeholder='Выберите опцию'
 					/>
-
+					<Spacer />
 					{/* 2. Radio group */}
 					<RadioGroup
-						title='Группа радио'
+						title='Размер шрифта'
 						name='radio-group'
 						options={fontSizeOptions}
 						selected={selectedFontSizeOption}
 						onChange={setSelectedFontSizeOption}
 					/>
-
+					<Spacer />
 					{/* 3. Select */}
 					<Select
 						title='Цвет шрифта'
@@ -99,28 +105,28 @@ export const ArticleParamsForm = () => {
 						onChange={setSelectedFontColor}
 						placeholder='Выберите опцию'
 					/>
-
+					<Spacer />
 					{/* 4. Separator */}
 					<Separator />
-
+					<Spacer />
 					{/* 5. Select */}
 					<Select
-						title='Третий селект'
+						title='Цвет фона'
 						options={backgroundColors}
 						selected={selectedBackgroundColor}
 						onChange={setSelectedBackgroundColor}
 						placeholder='Выберите опцию'
 					/>
-
+					<Spacer />
 					{/* 6. Select */}
 					<Select
-						title='Четвертый селект'
+						title='Ширина контента'
 						options={contentWidthArr}
 						selected={selectedContentWidth}
 						onChange={setSelectedContentWidth}
 						placeholder='Выберите опцию'
 					/>
-
+					<Spacer width={554} height={207} />
 					<div className={styles.bottomContainer}>
 						<Button title='Сбросить' htmlType='reset' type='clear' />
 						<Button title='Применить' htmlType='submit' type='apply' />
