@@ -17,7 +17,11 @@ import { Text } from 'src/ui/text';
 
 import styles from './ArticleParamsForm.module.scss';
 
-export const ArticleParamsForm = () => {
+interface ArticleParamsFormProps {
+	onApply: (settings: typeof defaultArticleState) => void;
+}
+
+export const ArticleParamsForm = ({ onApply }: ArticleParamsFormProps) => {
 	const [isOpen, setIsOpen] = useState(false);
 	const asideRef = useRef<HTMLElement>(null);
 
@@ -59,9 +63,31 @@ export const ArticleParamsForm = () => {
 		};
 	}, [isOpen]);
 
+	const handleReset = () => {
+		setSelectedFontFamilyOption(defaultArticleState.fontFamilyOption);
+		setSelectedFontSizeOption(defaultArticleState.fontSizeOption);
+		setSelectedFontColor(defaultArticleState.fontColor);
+		setSelectedBackgroundColor(defaultArticleState.backgroundColor);
+		setSelectedContentWidth(defaultArticleState.contentWidth);
+
+		// Применяем сброшенные настройки
+		onApply(defaultArticleState);
+	};
+
+	const handleApply = () => {
+		const currentSettings = {
+			fontFamilyOption: selectedFontFamilyOption,
+			fontSizeOption: selectedFontSizeOption,
+			fontColor: selectedFontColor,
+			backgroundColor: selectedBackgroundColor,
+			contentWidth: selectedContentWidth,
+		};
+
+		onApply(currentSettings);
+	};
+
 	return (
 		<>
-			{/* повторный клик по стрелке инвертирует isOpen */}
 			<ArrowButton
 				isOpen={isOpen}
 				onClick={(e) => {
@@ -74,11 +100,10 @@ export const ArticleParamsForm = () => {
 				className={`${styles.container} ${
 					isOpen ? styles.container_open : ''
 				}`}>
-				<form className={styles.form}>
+				<form className={styles.form} onSubmit={(e) => e.preventDefault()}>
 					<Text as='h2' size={31} weight={800} uppercase dynamicLite>
 						Задайте параметры
 					</Text>
-					{/* 1. Select */}
 					<Spacer />
 					<Select
 						title='Шрифт'
@@ -88,7 +113,6 @@ export const ArticleParamsForm = () => {
 						placeholder='Выберите опцию'
 					/>
 					<Spacer />
-					{/* 2. Radio group */}
 					<RadioGroup
 						title='Размер шрифта'
 						name='radio-group'
@@ -97,7 +121,6 @@ export const ArticleParamsForm = () => {
 						onChange={setSelectedFontSizeOption}
 					/>
 					<Spacer />
-					{/* 3. Select */}
 					<Select
 						title='Цвет шрифта'
 						options={fontColors}
@@ -106,10 +129,8 @@ export const ArticleParamsForm = () => {
 						placeholder='Выберите опцию'
 					/>
 					<Spacer />
-					{/* 4. Separator */}
 					<Separator />
 					<Spacer />
-					{/* 5. Select */}
 					<Select
 						title='Цвет фона'
 						options={backgroundColors}
@@ -118,7 +139,6 @@ export const ArticleParamsForm = () => {
 						placeholder='Выберите опцию'
 					/>
 					<Spacer />
-					{/* 6. Select */}
 					<Select
 						title='Ширина контента'
 						options={contentWidthArr}
@@ -128,8 +148,8 @@ export const ArticleParamsForm = () => {
 					/>
 					<Spacer width={554} height={207} />
 					<div className={styles.bottomContainer}>
-						<Button title='Сбросить' htmlType='reset' type='clear' />
-						<Button title='Применить' htmlType='submit' type='apply' />
+						<Button title='Сбросить' type='clear' onClick={handleReset} />
+						<Button title='Применить' type='apply' onClick={handleApply} />
 					</div>
 				</form>
 			</aside>
