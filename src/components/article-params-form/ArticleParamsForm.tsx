@@ -22,7 +22,7 @@ interface ArticleParamsFormProps {
 }
 
 export const ArticleParamsForm = ({ onApply }: ArticleParamsFormProps) => {
-	const [isOpen, setIsOpen] = useState(false);
+	const [isMenuOpen, setIsMenuOpen] = useState(false);
 	const asideRef = useRef<HTMLElement>(null);
 
 	const [selectedFontFamilyOption, setSelectedFontFamilyOption] = useState(
@@ -48,11 +48,11 @@ export const ArticleParamsForm = ({ onApply }: ArticleParamsFormProps) => {
 				asideRef.current &&
 				!asideRef.current.contains(event.target as Node)
 			) {
-				setIsOpen(false);
+				setIsMenuOpen(false);
 			}
 		};
 
-		if (isOpen) {
+		if (isMenuOpen) {
 			document.addEventListener('mousedown', handleClickOutside);
 		} else {
 			document.removeEventListener('mousedown', handleClickOutside);
@@ -61,7 +61,7 @@ export const ArticleParamsForm = ({ onApply }: ArticleParamsFormProps) => {
 		return () => {
 			document.removeEventListener('mousedown', handleClickOutside);
 		};
-	}, [isOpen]);
+	}, [isMenuOpen]);
 
 	const handleReset = () => {
 		setSelectedFontFamilyOption(defaultArticleState.fontFamilyOption);
@@ -89,16 +89,16 @@ export const ArticleParamsForm = ({ onApply }: ArticleParamsFormProps) => {
 	return (
 		<>
 			<ArrowButton
-				isOpen={isOpen}
+				isMenuOpen={isMenuOpen}
 				onClick={(e) => {
 					e.stopPropagation();
-					setIsOpen(!isOpen);
+					setIsMenuOpen(!isMenuOpen);
 				}}
 			/>
 			<aside
 				ref={asideRef}
 				className={`${styles.container} ${
-					isOpen ? styles.container_open : ''
+					isMenuOpen ? styles.container_open : ''
 				}`}>
 				<form className={styles.form} onSubmit={(e) => e.preventDefault()}>
 					<Text as='h2' size={31} weight={800} uppercase dynamicLite>
